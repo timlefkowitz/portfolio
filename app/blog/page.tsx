@@ -19,6 +19,16 @@ export default async function BlogPage() {
       <div className="space-y-12">
         {posts.map((post: any) => (
           <article key={post.id} className="group">
+            {post.image && (
+              <div className="mb-6 overflow-hidden rounded-lg aspect-[2/1] w-full bg-gray-100">
+                <img 
+                  src={post.image} 
+                  alt={post.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            )}
+            
             <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-2">
               <Link href={`/blog/${post.id}`} className="text-2xl font-bold hover:text-accent-1 transition-colors">
                 {post.title}

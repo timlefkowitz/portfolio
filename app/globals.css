@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-accent-1: #1AE855;
@@ -17,6 +18,16 @@
 :root {
   --background: var(--color-main-bg);
   --foreground: var(--color-main-text);
+}
+
+@keyframes hackerBlink {
+  0% { opacity: 1; }
+  100% { color: #22ff22; opacity: 1; }
+  50% { color: #006600; opacity: 0.3; }
+}
+
+.hacker-blink {
+  animation: hackerBlink 1s infinite;
 }
 
 body {

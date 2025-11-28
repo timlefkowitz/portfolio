@@ -43,7 +43,8 @@ export async function POST(request: Request) {
     title: body.title,
     content: body.content,
     excerpt: body.content.substring(0, 100) + '...',
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split('T')[0],
+    image: body.image || null // Optional image field
   };
 
   const { data, error } = await supabase

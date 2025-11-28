@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,6 +18,8 @@ export default function AdminPage() {
   // Form States
   const [blogTitle, setBlogTitle] = useState('');
   const [blogContent, setBlogContent] = useState('');
+  const [blogImage, setBlogImage] = useState<File | null>(null);
+  const blogContentRef = useRef<HTMLTextAreaElement>(null);
 
   const [projTitle, setProjTitle] = useState('');
   const [projDesc, setProjDesc] = useState('');
@@ -49,9 +51,29 @@ export default function AdminPage() {
 
   const resetForms = () => {
     setEditMode(null);
-    setBlogTitle(''); setBlogContent('');
+    setBlogTitle(''); setBlogContent(''); setBlogImage(null);
     setProjTitle(''); setProjDesc(''); setProjYear(''); setProjTags(''); setProjLink('');
     setGalleryTitle(''); setGalleryThumbnail(null); setGalleryImages(null); setCurrentGalleryImages([]);
+  };
+
+  const insertMarkdown = (prefix: string, suffix: string = '') => {
+    if (!blogContentRef.current) return;
+    const textarea = blogContentRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const before = text.substring(0, start);
+    const selection = text.substring(start, end);
+    const after = text.substring(end);
+
+    const newText = before + prefix + selection + suffix + after;
+    setBlogContent(newText);
+    
+    // Restore focus and selection
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + prefix.length, end + prefix.length);
+    }, 0);
   };
 
   const handleEditPost = (post: any) => {
@@ -128,9 +150,23 @@ export default function AdminPage() {
     e.preventDefault();
     setStatus('loading');
     try {
+      let imageUrl = '';
+      if (blogImage) {
+        const formData = new FormData();
+        formData.append('file', blogImage);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (uploadRes.ok) {
+          const data = await uploadRes.json();
+          imageUrl = data.url;
+        }
+      }
+
+      const blogData: any = { title: blogTitle, content: blogContent };
+      if (imageUrl) blogData.image = imageUrl;
+
       const body = editMode 
-        ? { method: 'PUT', id: editMode, data: { title: blogTitle, content: blogContent } }
-        : { title: blogTitle, content: blogContent };
+        ? { method: 'PUT', id: editMode, data: blogData }
+        : blogData;
       
       await fetch('/api/posts', {
         method: 'POST',
@@ -355,7 +391,33 @@ export default function AdminPage() {
             {activeTab === 'blog' && (
                 <form onSubmit={handleBlogSubmit} className="space-y-6">
                 <input type="text" placeholder="Title" value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)} className="w-full p-2 border-b border-gray-200 focus:border-accent-1 outline-none bg-transparent font-bold" required />
-                <textarea placeholder="Content..." value={blogContent} onChange={(e) => setBlogContent(e.target.value)} rows={10} className="w-full p-2 border border-gray-200 rounded focus:border-accent-1 outline-none bg-transparent font-mono text-sm" required />
+                
+                <div className="flex gap-2 mb-2 bg-gray-50 p-2 rounded text-sm">
+                  <button type="button" onClick={() => insertMarkdown('**', '**')} className="px-2 hover:bg-gray-200 rounded font-bold" title="Bold">B</button>
+                  <button type="button" onClick={() => insertMarkdown('*', '*')} className="px-2 hover:bg-gray-200 rounded italic" title="Italic">I</button>
+                  <button type="button" onClick={() => insertMarkdown('# ')} className="px-2 hover:bg-gray-200 rounded font-bold" title="Heading 1">H1</button>
+                  <button type="button" onClick={() => insertMarkdown('## ')} className="px-2 hover:bg-gray-200 rounded font-bold" title="Heading 2">H2</button>
+                  <button type="button" onClick={() => insertMarkdown('`', '`')} className="px-2 hover:bg-gray-200 rounded font-mono" title="Code">{'<>'}</button>
+                  <button type="button" onClick={() => insertMarkdown('```\n', '\n```')} className="px-2 hover:bg-gray-200 rounded font-mono" title="Code Block">{'```'}</button>
+                  <button type="button" onClick={() => insertMarkdown('[', '](url)')} className="px-2 hover:bg-gray-200 rounded text-blue-500" title="Link">Link</button>
+                  <button type="button" onClick={() => insertMarkdown('- ')} className="px-2 hover:bg-gray-200 rounded" title="List">• List</button>
+                </div>
+
+                <textarea 
+                  ref={blogContentRef}
+                  placeholder="Content (Markdown supported)..." 
+                  value={blogContent} 
+                  onChange={(e) => setBlogContent(e.target.value)} 
+                  rows={15} 
+                  className="w-full p-4 border border-gray-200 rounded focus:border-accent-1 outline-none bg-transparent font-mono text-sm" 
+                  required 
+                />
+                
+                <div className="space-y-2">
+                    <label className="text-xs uppercase font-bold text-gray-400">Featured Image</label>
+                    <input type="file" accept="image/*" onChange={(e) => setBlogImage(e.target.files ? e.target.files[0] : null)} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800" />
+                </div>
+
                 <button type="submit" disabled={status === 'loading'} className="bg-black text-white px-6 py-2 font-bold hover:bg-gray-800">{editMode ? 'Update Post' : 'Publish Post'}</button>
                 </form>
             )}

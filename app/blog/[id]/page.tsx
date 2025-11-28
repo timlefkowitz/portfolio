@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Helper to get posts
 async function getPosts() {
@@ -40,18 +42,28 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
         <Link href="/blog" className="text-sm text-gray-500 hover:text-accent-5 mb-4 inline-block">
           ← Back to Blog
         </Link>
+        
+        {post.image && (
+          <div className="mb-8 w-full aspect-[2/1] overflow-hidden rounded-lg bg-gray-50">
+            <img 
+              src={post.image} 
+              alt={post.title} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+
         <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
         <div className="text-sm text-gray-500 border-b border-gray-100 pb-8">
           Published on {post.date}
         </div>
       </div>
 
-      <div className="prose prose-lg prose-indigo max-w-none text-gray-700">
-        {/* In a real app, use a markdown parser here. For now, just raw text/paragraphs */}
-        {post.content.split('\n').map((paragraph: string, i: number) => (
-          <p key={i} className="mb-4">{paragraph}</p>
-        ))}
-      </div>
+      <article className="prose prose-lg prose-slate max-w-none">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {post.content}
+        </ReactMarkdown>
+      </article>
     </div>
   );
 }
