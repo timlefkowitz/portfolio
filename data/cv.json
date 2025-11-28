@@ -1,0 +1,88 @@
+{
+  "header": {
+    "name": "Tim Lefkowitz",
+    "role": "Senior Software Engineer & Technical Architect"
+  },
+  "summary": "Senior Software Engineer & Technical Architect with 6+ years of experience building distributed systems, AI-driven SaaS platforms, and high-scale backend services. Deep expertise in Java, TypeScript/Node.js, and cloud-native architectures. Architected and led development of complex multi-service platforms integrating 50+ APIs, real-time data pipelines, and ML/AI inference workloads. Passionate about designing clean systems, optimizing performance, and turning ambiguous business needs into scalable engineering solutions.",
+  "skills": [
+    "Rust", "TypeScript", "Java 8/11", "Spring Boot", "MVC", "Thymeleaf", 
+    "JavaScript", "jQuery", "Bootstrap", "HTML5", "Lua", "Kafka", "C#", 
+    "MySQL", "Redis", "CSS", "AWS", "Go", "Python", "OpenShift", 
+    "Kubernetes", "Jenkins", "Docker", "Akka", "Scala"
+  ],
+  "experience": [
+    {
+      "id": "1",
+      "role": "Co-Founder: Lead Software Engineer & Technical Architect",
+      "company": "Vellora Ai",
+      "period": "March 2025 - Present",
+      "items": [
+        "Lead the design, development, and scaling of the Vellora AI Revenue Operating System, an enterprise-grade SaaS platform revolutionizing sales intelligence.",
+        "Architect and implement full-cycle software solutions from conception through deployment.",
+        "Specialize in AI-powered sales platforms, multi-tenant architectures, and real-time data processing systems."
+      ]
+    },
+    {
+      "id": "2",
+      "role": "Software Developer",
+      "company": "Medicare & Medicaid Services",
+      "period": "October 2023 - March 2025",
+      "items": [
+        "Developed and customized software solutions including conversions, interfaces, enhancements, and UI modifications.",
+        "Handled full-cycle development from analysis to deployment and maintenance.",
+        "Proficient in Scala and RESTful APIs, managing complex enhancements with strong attention to detail."
+      ]
+    },
+    {
+      "id": "3",
+      "role": "Developer",
+      "company": "United States Postal Service",
+      "period": "March 2022 - October 2023",
+      "items": [
+        "Analyzed, designed, and built a microservices architecture system using Java, Kafka, Akka, Redis, OpenShift, and Docker.",
+        "Worked in an Agile setting to investigate and resolve defects alongside functional support.",
+        "Utilized AWS, Go, Python, OpenShift, Kubernetes, and Jenkins for deployment and infrastructure."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "title": "photonLabs",
+      "role": "Capstone Project",
+      "description": "A Full-Stack Web Application using the SpringBoot Framework. Features users, friends, groups, and feed functionality. Integrated with Filestack API and MySQL. Solo project demonstrating full-cycle development."
+    }
+  ],
+  "education": [
+    {
+      "id": "1",
+      "degree": "Full Stack Developer Certification",
+      "school": "Codeup",
+      "year": "2020"
+    },
+    {
+      "id": "2",
+      "degree": "Redis | RU101: Introduction to Redis Data Structures",
+      "school": "Redis University",
+      "year": "2020"
+    },
+    {
+      "id": "3",
+      "degree": "Scientific Computing with Python",
+      "school": "FreeCodeCamp (Dr. Charles Severance)",
+      "year": "2020"
+    },
+    {
+      "id": "4",
+      "degree": "Technical Support Fundamentals",
+      "school": "Google",
+      "year": "2020"
+    },
+    {
+      "id": "5",
+      "degree": "Programming Mentorship Program",
+      "school": "DevHouseATX",
+      "year": "2020"
+    }
+  ]
+}

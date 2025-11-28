@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1",
+    "title": "Vellora AI - AI-Powered Revenue Operating System",
+    "description": "Built a prototype SaaS platform in 6 weeks that transforms sales operations through AI-driven deal intelligence. The full-stack application features 50+ API endpoints, 25+ microservices, real-time calendar/email sync with Google and Microsoft, automated meeting transcription, GPT-4-powered deal analysis, and bi-directional CRM integrations. Architected a secure multi-tenant system with 40+ database tables, role-based permissions, real-time webhooks, and advanced AI features including momentum scoring, sentiment analysis, and conversational AI assistant.",
+    "year": "2025",
+    "tags": [
+      "Next.js",
+      "React",
+      "Stripe",
+      "PostgreSQL"
+    ],
+    "category": "Software",
+    "link": "#"
+  },
+  {
+    "id": "2",
+    "title": "Medicare & Medicaid Services",
+    "description": " Develop and customize software solutions to meet client needs, including conversions, interfaces, enhancements, and UI modifications. Handle full-cycle development from analysis to deployment and maintenance. Apply expertise in technologies, processes, and tools to support projects. Proficient in Scala and RESTful APIs, with strong organizational skills and attention to detail.\t",
+    "year": "2024",
+    "tags": [
+      "Software",
+      "Api"
+    ],
+    "category": "Software",
+    "link": "#"
+  },
+  {
+    "id": "3",
+    "title": "United States Postal Service ",
+    "description": "Developer on a team to analyze, design, and build a system built on multiple components of application code on a microservices architecture project with Java, Kafka, Akka, Redis, OpenShift, Docker in an Agile setting. Work with functional support to investigate and resolve defect skills: AWS, Go, Python, OpenShift, Kubernetes, Jenkins.",
+    "year": "2022",
+    "tags": [
+      "Java",
+      "Kafka",
+      "Api's"
+    ],
+    "category": "Software",
+    "link": "#"
+  },
+  {
+    "id": "1764032585681",
+    "title": "photonLabs ",
+    "description": "A Full-Stack Web Application using the SpringBoot Framework. An application with users, friends, groups. filestack Api and MVC with MySQL. Groups can be created by users and users can post to a feed. Each post then is tokenized for each user.  This was a solo project, Built before the Ai craze.\n",
+    "year": "2021",
+    "tags": [
+      "java",
+      "microservices"
+    ],
+    "category": "Software",
+    "link": "#"
+  }
+]

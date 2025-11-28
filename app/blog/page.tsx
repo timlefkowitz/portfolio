@@ -1,0 +1,41 @@
+import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+
+async function getPosts() {
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .order('date', { ascending: false });
+  return data || [];
+}
+
+export default async function BlogPage() {
+  const posts = await getPosts();
+
+  return (
+    <div>
+      <h1 className="text-4xl font-bold mb-12">Blog</h1>
+
+      <div className="space-y-12">
+        {posts.map((post: any) => (
+          <article key={post.id} className="group">
+            <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-2">
+              <Link href={`/blog/${post.id}`} className="text-2xl font-bold hover:text-accent-1 transition-colors">
+                {post.title}
+              </Link>
+              <span className="text-sm text-gray-400">[{post.date}]</span>
+            </div>
+            <p className="text-gray-700 max-w-2xl mb-3 leading-relaxed">
+              {post.excerpt}
+            </p>
+            <div>
+               <Link href={`/blog/${post.id}`} className="text-sm text-accent-2 hover:underline">
+                read more →
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

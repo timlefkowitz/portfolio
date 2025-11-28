@@ -20,6 +20,26 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Docker Deployment
+
+To run this application using Docker, make sure you have Docker and Docker Compose installed.
+
+### 1. Build and Run
+
+```bash
+docker-compose up -d --build
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000).
+
+### 2. Data Persistence
+
+This configuration uses Docker volumes to ensure your data persists even if you stop or remove the container.
+- **Data Files (`/data`)**: Mapped to `./data` on your host machine.
+- **Uploaded Images (`/public/uploads`)**: Mapped to `./public/uploads` on your host machine.
+
+This means any changes made in the Admin panel (new posts, uploaded images) will be saved to your local file system and will survive container restarts.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

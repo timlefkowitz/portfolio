@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  portfolio:
+    container_name: portfolio-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount the data directory to persist JSON files
+      - ./data:/app/data
+      # Mount the uploads directory to persist images
+      - ./public/uploads:/app/public/uploads
+    restart: unless-stopped
+
