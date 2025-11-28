@@ -44,7 +44,8 @@ export async function POST(request: Request) {
     content: body.content,
     excerpt: body.content.substring(0, 100) + '...',
     date: new Date().toISOString().split('T')[0],
-    image: body.image || null // Optional image field
+    image: body.image || null, // Optional legacy image field
+    images: body.images || [] // New array field for multiple images
   };
 
   const { data, error } = await supabase

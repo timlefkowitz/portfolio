@@ -36,6 +36,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
     notFound();
   }
 
+  // Helper to normalize images array
+  const images = post.images && Array.isArray(post.images) && post.images.length > 0 
+    ? post.images 
+    : (post.image ? [post.image] : []);
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
@@ -43,13 +48,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
           ← Back to Blog
         </Link>
         
-        {post.image && (
-          <div className="mb-8 w-full aspect-[2/1] overflow-hidden rounded-lg bg-gray-50">
-            <img 
-              src={post.image} 
-              alt={post.title} 
-              className="w-full h-full object-cover"
-            />
+        {/* Multiple Images Grid / Slider */}
+        {images.length > 0 && (
+          <div className={`grid gap-4 mb-8 ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {images.map((img: string, index: number) => (
+              <div key={index} className={`w-full overflow-hidden rounded-lg bg-gray-50 ${images.length === 1 ? 'aspect-[2/1]' : 'aspect-square'}`}>
+                <img 
+                  src={img} 
+                  alt={`${post.title} - ${index + 1}`} 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
+                />
+              </div>
+            ))}
           </div>
         )}
 

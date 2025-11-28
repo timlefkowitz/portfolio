@@ -18,7 +18,8 @@ export default function AdminPage() {
   // Form States
   const [blogTitle, setBlogTitle] = useState('');
   const [blogContent, setBlogContent] = useState('');
-  const [blogImage, setBlogImage] = useState<File | null>(null);
+  const [blogImages, setBlogImages] = useState<FileList | null>(null);
+  const [currentBlogImages, setCurrentBlogImages] = useState<string[]>([]);
   const blogContentRef = useRef<HTMLTextAreaElement>(null);
 
   const [projTitle, setProjTitle] = useState('');
@@ -51,7 +52,7 @@ export default function AdminPage() {
 
   const resetForms = () => {
     setEditMode(null);
-    setBlogTitle(''); setBlogContent(''); setBlogImage(null);
+    setBlogTitle(''); setBlogContent(''); setBlogImages(null); setCurrentBlogImages([]);
     setProjTitle(''); setProjDesc(''); setProjYear(''); setProjTags(''); setProjLink('');
     setGalleryTitle(''); setGalleryThumbnail(null); setGalleryImages(null); setCurrentGalleryImages([]);
   };
@@ -80,6 +81,14 @@ export default function AdminPage() {
     setEditMode(post.id);
     setBlogTitle(post.title);
     setBlogContent(post.content);
+    // Handle legacy single image or new array
+    if (post.images && Array.isArray(post.images)) {
+        setCurrentBlogImages(post.images);
+    } else if (post.image) {
+        setCurrentBlogImages([post.image]);
+    } else {
+        setCurrentBlogImages([]);
+    }
   };
 
   const handleEditProject = (project: any) => {
@@ -150,19 +159,32 @@ export default function AdminPage() {
     e.preventDefault();
     setStatus('loading');
     try {
-      let imageUrl = '';
-      if (blogImage) {
-        const formData = new FormData();
-        formData.append('file', blogImage);
-        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
-        if (uploadRes.ok) {
-          const data = await uploadRes.json();
-          imageUrl = data.url;
+      // Upload Multiple Images
+      const newImageUrls: string[] = [];
+      if (blogImages) {
+        for (let i = 0; i < blogImages.length; i++) {
+          const file = blogImages[i];
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+          if (uploadRes.ok) {
+            const data = await uploadRes.json();
+            newImageUrls.push(data.url);
+          }
         }
       }
 
-      const blogData: any = { title: blogTitle, content: blogContent };
-      if (imageUrl) blogData.image = imageUrl;
+      const blogData: any = { 
+          title: blogTitle, 
+          content: blogContent,
+          images: [...(editMode ? currentBlogImages : []), ...newImageUrls]
+      };
+      
+      // Legacy support: also set 'image' to the first one for backward compat views
+      if (blogData.images.length > 0) {
+          blogData.image = blogData.images[0];
+      }
 
       const body = editMode 
         ? { method: 'PUT', id: editMode, data: blogData }
@@ -414,9 +436,20 @@ export default function AdminPage() {
                 />
                 
                 <div className="space-y-2">
-                    <label className="text-xs uppercase font-bold text-gray-400">Featured Image</label>
-                    <input type="file" accept="image/*" onChange={(e) => setBlogImage(e.target.files ? e.target.files[0] : null)} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800" />
+                    <label className="text-xs uppercase font-bold text-gray-400">Images</label>
+                    <input type="file" accept="image/*" multiple onChange={(e) => setBlogImages(e.target.files)} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800" />
                 </div>
+
+                {editMode && currentBlogImages.length > 0 && (
+                    <div className="p-4 bg-gray-50 rounded">
+                        <h4 className="text-xs font-bold mb-2 text-gray-500">Current Images ({currentBlogImages.length})</h4>
+                         <div className="flex flex-wrap gap-2">
+                            {currentBlogImages.map((img, i) => (
+                                <img key={i} src={img} className="w-16 h-16 object-cover rounded border border-gray-200" />
+                            ))}
+                         </div>
+                    </div>
+                )}
 
                 <button type="submit" disabled={status === 'loading'} className="bg-black text-white px-6 py-2 font-bold hover:bg-gray-800">{editMode ? 'Update Post' : 'Publish Post'}</button>
                 </form>
