@@ -267,7 +267,7 @@ export default function AdminPage() {
     <div className="max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">Content Management</h1>
       
-      <div className="flex gap-4 mb-8 border-b border-gray-200 pb-4 overflow-x-auto">
+      <div className="flex gap-4 mb-8 border-b border-gray-200 pb-4 overflow-x-auto items-center">
         {['blog', 'projects', 'gallery', 'cv'].map((tab) => (
           <button
             key={tab}
@@ -279,6 +279,11 @@ export default function AdminPage() {
             {tab}
           </button>
         ))}
+        <div className="ml-auto">
+           <a href="/admin/migrate" className="text-xs font-bold text-red-400 hover:text-red-600 uppercase tracking-widest">
+              ⚠ Migrate Data
+           </a>
+        </div>
       </div>
 
       {status === 'success' && <div className="text-green-600 mb-6 font-mono text-sm bg-green-50 p-2 rounded">&gt; Success!</div>}
