@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 interface Project {
   id: number; // Changed to number as per Supabase auto-increment
   title: string;

@@ -1,5 +1,8 @@
 import { supabase } from '@/lib/supabase';
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 async function getCV() {
   const { data } = await supabase
     .from('cv')

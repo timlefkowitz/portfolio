@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 // Helper to get galleries
 async function getGalleries() {
   const { data } = await supabase
